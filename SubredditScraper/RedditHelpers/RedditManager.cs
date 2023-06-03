@@ -2,6 +2,7 @@ using Reddit;
 using Reddit.Controllers;
 using Reddit.Inputs;
 using Serilog;
+using SubredditScraper.Interfaces;
 using SubredditScraper.Loggers;
 using SubredditScraper.RawData;
 using SubredditScraper.ThirdPartyWebsiteWorkers;
@@ -15,31 +16,23 @@ public class RedditManager
     private readonly ILogger _logger;
     
     private readonly RedditClient _redditClient;
-    private readonly RedgifsDownloader? _redgifsDownloader;
-    private readonly GfycatDownloader _gfycatDownloader;
+    private readonly HttpDownloader _httpDownloader;
+    private readonly List<IWebsiteMediaDownloader> _websiteContentFetchers;
 
-    public RedditManager(ILogger logger, HttpDownloader httpDownloader, RedgifsDownloader redgifsDownloader, GfycatDownloader gfycatDownloader)
+    public RedditManager(ILogger logger, RedditClient redditClient, HttpDownloader httpDownloader, List<IWebsiteMediaDownloader> websiteContentFetchers)
     {
         _logger = logger;
+        _redditClient = redditClient;
         _httpDownloader = httpDownloader;
-        _redgifsDownloader = redgifsDownloader;
-        _gfycatDownloader = gfycatDownloader;
-
-        _redditClient = GetRedditClient();
+        _websiteContentFetchers = websiteContentFetchers;
     }
     
-    private RedditClient GetRedditClient()
-    {
-        var redditClient = new RedditClient(appId: ApiKeys.RedditClientId, appSecret: ApiKeys.RedditApiSecret, refreshToken: ApiKeys.RefreshToken);
-        
-        return redditClient;
-    }
-
     public void LogUsernameAndCakeDay()
     {
         _logger.Information("Username: " + _redditClient.Account.Me.Name);
         _logger.Information("Cake Day: " + _redditClient.Account.Me.Created.ToString("D"));
     }
+    
     public async Task ScrapeTopXOnSub(string subredditName, int postsToScrape = 50)
     {
         if (subredditName.ToLower() == "announcements")
@@ -107,30 +100,28 @@ public class RedditManager
                 .Replace('?', '_');
 
             var baseFolderWithSubredditName =
-                Path.Join(DownloadBaseFolder, convertedCurrentPost.Subreddit);
+                Path.Join(Program.BaseFolder, convertedCurrentPost.Subreddit);
 
             Directory.CreateDirectory(baseFolderWithSubredditName);
 
             var newFullPath = Path.Join(baseFolderWithSubredditName, $"TOP_{postNumber}_{fileNameOnly}");
 
-            if (urlToDownload.ToLower().Contains("redgifs.com"))
+            foreach (var contentFetcher in _websiteContentFetchers)
             {
-                if (_redgifsDownloader is null) throw new NullReferenceException();
+                var domainToMatch = contentFetcher.DomainToMatchOn.ToLower();
                 
-                await _redgifsDownloader.GetMedia(urlToDownload, baseFolderWithSubredditName, postNumber);
+                if (!urlToDownload.ToLower().Contains(domainToMatch))
+                {
+                    continue;
+                }
+                
+                //Otherwise:
+                await contentFetcher.GetMedia(urlToDownload, baseFolderWithSubredditName, postNumber);
                 
                 return;
             }
             
-            if (urlToDownload.ToLower().Contains("gfycat.com"))
-            {
-                if (_gfycatDownloader is null) throw new NullReferenceException();
-                
-                await _gfycatDownloader.GetMedia(urlToDownload, baseFolderWithSubredditName, postNumber);
-                
-                return;
-            }
-
+            // If none of the downloaders matched and handled it, then download it directly
             await _httpDownloader.DownloadFile(urlToDownload, newFullPath);
         }
         catch (HttpRequestException ex)

@@ -4,14 +4,14 @@ using SubredditScraper.Interfaces;
 
 namespace SubredditScraper.ThirdPartyWebsiteWorkers;
 
-public class GfycatDownloader : IThirdPartyWebsiteDownloader
+public class GfycatMediaDownloader : IWebsiteMediaDownloader
 {
     public string DomainToMatchOn => "gfycat.com";
     
     private readonly ILogger _logger;
     private readonly HttpDownloader _httpDownloader;
 
-    public GfycatDownloader(ILogger logger, HttpDownloader httpDownloader)
+    public GfycatMediaDownloader(ILogger logger, HttpDownloader httpDownloader)
     {
         _logger = logger;
         _httpDownloader = httpDownloader;

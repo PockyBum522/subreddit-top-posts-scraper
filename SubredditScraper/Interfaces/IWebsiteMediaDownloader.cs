@@ -1,6 +1,6 @@
 ﻿namespace SubredditScraper.Interfaces;
 
-public interface IThirdPartyWebsiteDownloader
+public interface IWebsiteMediaDownloader
 {
     public string DomainToMatchOn { get; }
     

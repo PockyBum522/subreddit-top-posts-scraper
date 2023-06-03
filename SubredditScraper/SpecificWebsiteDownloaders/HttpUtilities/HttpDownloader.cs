@@ -6,11 +6,13 @@ namespace SubredditScraper.ThirdPartyWebsiteWorkers;
 public class HttpDownloader
 {
     private readonly ILogger _logger;
+    private readonly ILogger _unknownExtensionsLogger;
     private HttpClient? _httpClient;
 
-    public HttpDownloader(ILogger logger, HttpClient httpClient)
+    public HttpDownloader(ILogger logger, ILogger unknownExtensionsLogger, HttpClient httpClient)
     {
         _logger = logger;
+        _unknownExtensionsLogger = unknownExtensionsLogger;
         _httpClient = httpClient;
     }
 
@@ -18,7 +20,7 @@ public class HttpDownloader
     {
         if (!UrlHasWhitelistedExtension(url))
         {
-            _logger.Error("Extension not whitelisted - URL: {FromUrl} | TO: {PostType}",
+            _unknownExtensionsLogger.Error("Extension not whitelisted - URL: {FromUrl} | TO: {PostType}",
                 url, fullPathToSaveTo);
         }
 

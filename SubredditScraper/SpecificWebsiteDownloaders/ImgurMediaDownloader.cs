@@ -2,7 +2,7 @@
 
 namespace SubredditScraper.ThirdPartyWebsiteWorkers;
 
-public class ImgurDownloader : IThirdPartyWebsiteDownloader
+public class ImgurMediaDownloader : IWebsiteMediaDownloader
 {
     public string DomainToMatchOn => "imgur.com";
     

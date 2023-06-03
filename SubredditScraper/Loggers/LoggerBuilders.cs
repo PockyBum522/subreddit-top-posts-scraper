@@ -4,13 +4,14 @@ namespace SubredditScraper.Loggers;
 
 public class LoggerBuilders
 {
+    public static string LogFolderPath => Path.Join(Program.BaseFolder, "Logs");
+    
     public static ILogger GetApplicationLogger()
     {
-        var logFolder = @"C:\Users\Public\Documents\Logs\RedditScraper\";
 
-        Directory.CreateDirectory(logFolder);
+        Directory.CreateDirectory(LogFolderPath);
 
-        var logPath = Path.Join(logFolder, "log.log");
+        var logPath = Path.Join(LogFolderPath, "application.log");
         
         return
             new LoggerConfiguration()
@@ -28,7 +29,7 @@ public class LoggerBuilders
 
         Directory.CreateDirectory(logFolder);
 
-        var logPath = Path.Join(logFolder, "log.log");
+        var logPath = Path.Join(LogFolderPath, "unknown_extensions.log");
         
         return
             new LoggerConfiguration()

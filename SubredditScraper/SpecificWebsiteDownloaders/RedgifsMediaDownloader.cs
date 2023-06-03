@@ -4,14 +4,14 @@ using SubredditScraper.Interfaces;
 
 namespace SubredditScraper.ThirdPartyWebsiteWorkers;
 
-public class RedgifsDownloader : IThirdPartyWebsiteDownloader
+public class RedgifsMediaDownloader : IWebsiteMediaDownloader
 {
     public string DomainToMatchOn => "redgifs.com";
     
     private readonly ILogger _logger;
     private readonly HttpDownloader _httpDownloader;
 
-    public RedgifsDownloader(ILogger logger, HttpDownloader httpDownloader)
+    public RedgifsMediaDownloader(ILogger logger, HttpDownloader httpDownloader)
     {
         _logger = logger;
         _httpDownloader = httpDownloader;
