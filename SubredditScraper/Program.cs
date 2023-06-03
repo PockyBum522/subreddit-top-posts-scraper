@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Imgur.API.Authentication;
+using Imgur.API.Endpoints;
+using Imgur.API.Models;
+using Newtonsoft.Json;
 using Reddit;
 using SubredditScraper.Interfaces;
 using SubredditScraper.Loggers;
@@ -25,7 +28,7 @@ public class Program
         
         var httpDownloader = new HttpDownloader(logger, unknownExtensionsLogger, httpClient);
         
-        var redditClient = new RedditClient(appId: ApiKeys.RedditClientId, appSecret: ApiKeys.RedditApiSecret, refreshToken: ApiKeys.RefreshToken);
+        var redditClient = new RedditClient(appId: RedditApiKeys.RedditClientId, appSecret: RedditApiKeys.RedditApiSecret, refreshToken: RedditApiKeys.RefreshToken);
 
         var websiteContentFetchers = new List<IWebsiteMediaDownloader>();
 
@@ -41,7 +44,28 @@ public class Program
     
     public static async Task Main()
     {
-        await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/", 1);
+        var apiClient = new ApiClient(ImgurApiKeys.ImgurClientId, ImgurApiKeys.ImgurClientSecret);
+        var httpClient = new HttpClient();
+
+        var oAuth2Endpoint = new OAuth2Endpoint(apiClient, httpClient);
+        var authUrl = oAuth2Endpoint.GetAuthorizationUrl();
+
+        IOAuth2Token token = new OAuth2Token()
+        {
+            AccessToken = ImgurApiKeys.ImgurAccessToken,
+            RefreshToken = ImgurApiKeys.ImgurRefreshToken,
+            AccountId = ImgurApiKeys.ImgurAccountId,
+            AccountUsername = ImgurApiKeys.ImgurUsername,
+            ExpiresIn = 999999,
+            TokenType = "state"
+        };
+        
+        apiClient.SetOAuth2Token(token);
+
+        var imageEndpoint = new ImageEndpoint(apiClient, httpClient);
+        
+        imageEndpoint.
+        // await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/", 1);
 
         // var subredditsToScrape = await GetSubredditsToScrape();
         //      
