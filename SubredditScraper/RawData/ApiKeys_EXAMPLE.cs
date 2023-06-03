@@ -1,6 +1,6 @@
 ﻿namespace SubredditScraper.RawData;
 
-public class ApiKeys
+public class EXAMPLE_ApiKeys
 {
 	// To get these, go to: https://www.reddit.com/prefs/apps/ and click "Create another app" or "Create new app"
 	
@@ -8,7 +8,7 @@ public class ApiKeys
 	
 	// You don't need to fill in an "about uri"
 	
-	// For redirect URI, put EXACTLY: http://localhost:8080/Reddit.NET/oauthRedirect
+	// For redirect URI, put EXACTLY: http://127.0.0.1:8080/Reddit.NET/oauthRedirect
 	
 	// This is what you typed in for "name" and is what shows up in blue on the prefs/apps page
     internal static string RedditAppId => "subbred_scraper_01";

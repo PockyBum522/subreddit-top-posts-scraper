@@ -4,6 +4,12 @@ using SubredditScraper.RawData;
 
 namespace SubredditScraper.RedditHelpers;
 
+// TO USE THIS FILE, FILL IN THE LISTED AS NECESSARY ENTRIES IN ApiKeys.cs or rename ApiKeys_EXAMPLE.cs and its class
+// to ApiKeys.cs and then fill it in.
+
+// After that, just make the only call in Main() this:
+// AuthTokenRetriever.GetAuthToken();
+
 class AuthTokenRetriever
 {
     // Change this to the path to your local web browser.  --Kris
@@ -31,7 +37,7 @@ class AuthTokenRetriever
         Console.WriteLine("Token retrieval utility terminated.");
     }
 
-    public static void OpenBrowser(string authUrl = "about:blank")
+    private static void OpenBrowser(string authUrl = "about:blank")
     {
         try
         {
