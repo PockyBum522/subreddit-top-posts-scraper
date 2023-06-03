@@ -100,7 +100,7 @@ public class RedditManager
                 .Replace('?', '_');
 
             var baseFolderWithSubredditName =
-                Path.Join(Program.BaseFolder, convertedCurrentPost.Subreddit);
+                Path.Join(Program.BaseFolder, "Downloads", convertedCurrentPost.Subreddit);
 
             Directory.CreateDirectory(baseFolderWithSubredditName);
 

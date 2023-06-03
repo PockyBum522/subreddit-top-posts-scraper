@@ -11,7 +11,7 @@ namespace SubredditScraper;
 public class Program
 {
     internal const string BaseFolder = @"C:\Users\Public\Documents\RedditScraper\";
-    internal const string JsonFileOfSubredditsToScrape = @"D:\Dropbox\Documents\Desktop\subredditsToScrape.json";
+    internal const string JsonFileOfSubredditsToScrape = @"E:\Dropbox\Documents\Desktop\subredditsToScrape.json";
     
     private static readonly RedditManager RedditManager;
 

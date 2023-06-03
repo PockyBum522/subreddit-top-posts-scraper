@@ -50,9 +50,11 @@ public class HttpDownloader
         var fileNameOnly = Path.GetFileName(trimmedUrl)
             .Replace('?', '_');
 
-        Directory.CreateDirectory(folderPathToSaveTo);
+        var fullFolderToSaveTo = Path.Join(folderPathToSaveTo, "Downloads");
+        
+        Directory.CreateDirectory(fullFolderToSaveTo);
 
-        return Path.Join(folderPathToSaveTo, $"TOP_{postNumber}_{fileNameOnly}");
+        return Path.Join(fullFolderToSaveTo, $"TOP_{postNumber}_{fileNameOnly}");
     }
     
     private bool UrlHasWhitelistedExtension(string url)
