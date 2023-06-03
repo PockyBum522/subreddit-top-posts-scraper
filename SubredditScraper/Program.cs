@@ -14,6 +14,7 @@ public class Program
     internal const string JsonFileOfSubredditsToScrape = @"E:\Dropbox\Documents\Desktop\subredditsToScrape.json";
     
     private static readonly RedditManager RedditManager;
+    private static readonly ImgurMediaDownloader _testImgurDownloader;
 
     static Program()
     {
@@ -30,20 +31,26 @@ public class Program
 
         websiteContentFetchers.Add(new RedgifsMediaDownloader(logger, httpDownloader));
         websiteContentFetchers.Add( new GfycatMediaDownloader(logger, httpDownloader));
+        websiteContentFetchers.Add( new ImgurMediaDownloader(logger, httpDownloader));
         
         RedditManager = new RedditManager(logger, redditClient, httpDownloader, websiteContentFetchers);
+        
+        
+        _testImgurDownloader = new ImgurMediaDownloader(logger, httpDownloader);
     }
     
     public static async Task Main()
     {
-        var subredditsToScrape = await GetSubredditsToScrape();
-             
-         RedditManager.LogUsernameAndCakeDay();
-        
-         foreach (var subName in subredditsToScrape)
-         {
-             await RedditManager.ScrapeTopXOnSub(subName, 2000);
-         }
+        await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/", 1);
+
+        // var subredditsToScrape = await GetSubredditsToScrape();
+        //      
+        //  RedditManager.LogUsernameAndCakeDay();
+        //
+        //  foreach (var subName in subredditsToScrape)
+        //  {
+        //      await RedditManager.ScrapeTopXOnSub(subName, 2000);
+        //  }
     }
 
     private static async Task<List<string>> GetSubredditsToScrape()
