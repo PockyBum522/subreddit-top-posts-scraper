@@ -9,6 +9,8 @@
 # Whitelist .gitkeep files even if something else is blacklisting that directory
 !/**/.gitkeep
 
+ApiKeys.cs
+
 # All installer files
 /WindowsSetupAssistant/Resources/Installers/Installer Archives/*
 /WindowsSetupAssistant/Resources/Installers/Installer Executables/*
