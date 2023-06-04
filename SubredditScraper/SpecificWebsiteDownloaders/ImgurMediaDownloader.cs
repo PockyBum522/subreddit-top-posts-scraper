@@ -9,7 +9,7 @@ namespace SubredditScraper.SpecificWebsiteDownloaders;
 
 public class ImgurMediaDownloader : IWebsiteMediaDownloader
 {
-    public string DomainToMatchOn => "imgur.com";
+    public string DomainToMatchOn => "imgur.com/a/";
     
     private readonly ILogger _logger;
     private readonly HttpClient _httpClient;
@@ -51,7 +51,7 @@ public class ImgurMediaDownloader : IWebsiteMediaDownloader
                 imageNumberInAlbum++;
 
                 var builtBaseFolderPath = Path.Combine(folderPathToSaveTo,
-                    $"TOP_{postNumber.ToString("D3")}_{albumHash}");
+                    $"TOP_{postNumber.ToString("D3")}_ALBUM_{albumHash}");
 
                 Directory.CreateDirectory(builtBaseFolderPath);
                 

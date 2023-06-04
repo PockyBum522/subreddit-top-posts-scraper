@@ -15,7 +15,7 @@ namespace SubredditScraper;
 public class Program
 {
     internal const string BaseFolder = @"C:\Users\Public\Documents\RedditScraper\";
-    internal const string JsonFileOfSubredditsToScrape = @"E:\Dropbox\Documents\Desktop\subredditsToScrape.json";
+    internal const string JsonFileOfSubredditsToScrape = @"E:\Dropbox\Programming\Resources\Subreddit Scraper\subredditsToScrape.json";
     
     private static readonly RedditManager RedditManager;
     private static readonly ImgurMediaDownloader _testImgurDownloader;
@@ -38,23 +38,18 @@ public class Program
         websiteContentFetchers.Add( new ImgurMediaDownloader(logger, httpClient, httpDownloader));
         
         RedditManager = new RedditManager(logger, redditClient, httpDownloader, websiteContentFetchers);
-        
-        
-        _testImgurDownloader = new ImgurMediaDownloader(logger, httpClient, httpDownloader);
     }
     
     public static async Task Main()
     {
-        await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/test", 1);
-
-        // var subredditsToScrape = await GetSubredditsToScrape();
-        //      
-        //  RedditManager.LogUsernameAndCakeDay();
-        //
-        //  foreach (var subName in subredditsToScrape)
-        //  {
-        //      await RedditManager.ScrapeTopXOnSub(subName, 2000);
-        //  }
+        var subredditsToScrape = await GetSubredditsToScrape();
+             
+         RedditManager.LogUsernameAndCakeDay();
+        
+         foreach (var subName in subredditsToScrape)
+         {
+             await RedditManager.ScrapeTopXOnSub(subName, 2000);
+         }
     }
 
     private static async Task<List<string>> GetSubredditsToScrape()

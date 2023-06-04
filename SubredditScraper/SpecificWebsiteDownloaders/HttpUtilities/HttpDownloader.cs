@@ -53,7 +53,7 @@ public class HttpDownloader
         
         Directory.CreateDirectory(fullFolderToSaveTo);
 
-        return Path.Join(fullFolderToSaveTo, $"TOP_{postNumber}_{fileNameOnly}");
+        return Path.Join(fullFolderToSaveTo, $"TOP_{postNumber.ToString("D3")}_{fileNameOnly}");
     }
     
     private bool UrlHasWhitelistedExtension(string url)
