@@ -5,7 +5,7 @@ using Serilog;
 using SubredditScraper.Interfaces;
 using SubredditScraper.Loggers;
 using SubredditScraper.RawData;
-using SubredditScraper.ThirdPartyWebsiteWorkers;
+using SubredditScraper.SpecificWebsiteDownloaders.HttpUtilities;
 
 namespace SubredditScraper.RedditHelpers;
 

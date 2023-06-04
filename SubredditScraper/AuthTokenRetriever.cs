@@ -4,7 +4,7 @@ using Imgur.API.Endpoints;
 using Reddit.AuthTokenRetriever;
 using SubredditScraper.RawData;
 
-namespace SubredditScraper.RedditHelpers;
+namespace SubredditScraper;
 
 // TO USE THIS FILE, FILL IN THE LISTED AS NECESSARY ENTRIES IN ApiKeys.cs or rename ApiKeys_EXAMPLE.cs and its class
 // to ApiKeys.cs and then fill it in.

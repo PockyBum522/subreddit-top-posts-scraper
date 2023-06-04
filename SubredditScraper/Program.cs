@@ -7,7 +7,8 @@ using SubredditScraper.Interfaces;
 using SubredditScraper.Loggers;
 using SubredditScraper.RawData;
 using SubredditScraper.RedditHelpers;
-using SubredditScraper.ThirdPartyWebsiteWorkers;
+using SubredditScraper.SpecificWebsiteDownloaders;
+using SubredditScraper.SpecificWebsiteDownloaders.HttpUtilities;
 
 namespace SubredditScraper;
 
@@ -34,38 +35,17 @@ public class Program
 
         websiteContentFetchers.Add(new RedgifsMediaDownloader(logger, httpDownloader));
         websiteContentFetchers.Add( new GfycatMediaDownloader(logger, httpDownloader));
-        websiteContentFetchers.Add( new ImgurMediaDownloader(logger, httpDownloader));
+        websiteContentFetchers.Add( new ImgurMediaDownloader(logger, httpClient, httpDownloader));
         
         RedditManager = new RedditManager(logger, redditClient, httpDownloader, websiteContentFetchers);
         
         
-        _testImgurDownloader = new ImgurMediaDownloader(logger, httpDownloader);
+        _testImgurDownloader = new ImgurMediaDownloader(logger, httpClient, httpDownloader);
     }
     
     public static async Task Main()
     {
-        var apiClient = new ApiClient(ImgurApiKeys.ImgurClientId, ImgurApiKeys.ImgurClientSecret);
-        var httpClient = new HttpClient();
-
-        var oAuth2Endpoint = new OAuth2Endpoint(apiClient, httpClient);
-        var authUrl = oAuth2Endpoint.GetAuthorizationUrl();
-
-        IOAuth2Token token = new OAuth2Token()
-        {
-            AccessToken = ImgurApiKeys.ImgurAccessToken,
-            RefreshToken = ImgurApiKeys.ImgurRefreshToken,
-            AccountId = ImgurApiKeys.ImgurAccountId,
-            AccountUsername = ImgurApiKeys.ImgurUsername,
-            ExpiresIn = 999999,
-            TokenType = "state"
-        };
-        
-        apiClient.SetOAuth2Token(token);
-
-        var imageEndpoint = new ImageEndpoint(apiClient, httpClient);
-        
-        imageEndpoint.
-        // await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/", 1);
+        await _testImgurDownloader.GetMedia("https://imgur.com/a/tBIq58Z", @"D:/Dropbox/Documents/Desktop/test", 1);
 
         // var subredditsToScrape = await GetSubredditsToScrape();
         //      

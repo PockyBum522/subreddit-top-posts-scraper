@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using SubredditScraper.RawData;
 
-namespace SubredditScraper.ThirdPartyWebsiteWorkers;
+namespace SubredditScraper.SpecificWebsiteDownloaders.HttpUtilities;
 
 public class HttpDownloader
 {
@@ -34,10 +34,9 @@ public class HttpDownloader
     }
 
     public async Task<string> GetWebsiteSourceHtml(string url)
-    {
-        // Otherwise, download the media:
-        _httpClient ??= new HttpClient();
-            
+    {        
+        if (_httpClient is null) throw new NullReferenceException();
+        
         var response = await _httpClient.GetAsync(url);
 
         var siteHtml = await response.Content.ReadAsStringAsync();

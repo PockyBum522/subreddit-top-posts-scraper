@@ -1,8 +1,8 @@
-﻿using RestSharp;
-using Serilog;
+﻿using Serilog;
 using SubredditScraper.Interfaces;
+using SubredditScraper.SpecificWebsiteDownloaders.HttpUtilities;
 
-namespace SubredditScraper.ThirdPartyWebsiteWorkers;
+namespace SubredditScraper.SpecificWebsiteDownloaders;
 
 public class GfycatMediaDownloader : IWebsiteMediaDownloader
 {
